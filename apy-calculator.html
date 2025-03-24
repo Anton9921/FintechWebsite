@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APY Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+            overflow-x: hidden;
+        }
+        nav {
+            background: #333;
+            color: white;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+            color: white;
+            margin-right: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #ff6f61;
+        }
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 40px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .calculator {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: slideIn 1.5s ease-in-out;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .result {
+            background: #f4f4f4;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .graph-container {
+            margin-top: 40px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="checking.html">Checking</a>
+        <a href="savings.html">Savings</a>
+        <a href="investment.html">Investments</a>
+        <a href="fees.html">Fees</a>
+        <a href="pros-cons.html">Pros/Cons</a>
+        <a href="comparison.html">Comparison</a>
+        <a href="apy-calculator.html">APY Calculator</a>
+        <a href="works-cited.html">Sources</a>
+    </nav>
+
+    <h1>APY Calculator</h1>
+    
+    <div class="calculator">
+        <label for="bank">Select Bank:</label>
+        <select id="bank" onchange="updateAPY()">
+            <option value="0.01">Bank of America (0.01-0.50%)</option>
+            <option value="0.05">Wells Fargo (0.05-1.00%)</option>
+            <option value="3.70">Capital One (~3.70%)</option>
+            <option value="3.70">Ally Bank (~3.70%)</option>
+        </select>
+
+        <label for="amount">Initial Amount ($):</label>
+        <input type="number" id="amount" placeholder="Enter amount">
+
+        <label for="monthly">Monthly Deposit ($):</label>
+        <input type="number" id="monthly" placeholder="Enter monthly deposit">
+
+        <label for="years">Years:</label>
+        <input type="number" id="years" placeholder="Enter years">
+
+        <button onclick="calculate()">Calculate</button>
+
+        <div class="result" id="result"></div>
+
+        <div class="graph-container">
+            <canvas id="apyChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('apyChart').getContext('2d');
+        let apyChart;
+
+        function updateAPY() {
+            const bankSelect = document.getElementById('bank');
+            const apy = parseFloat(bankSelect.value);
+            document.getElementById('apy').value = apy;
+        }
+
+        function calculate() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const monthly = parseFloat(document.getElementById('monthly').value);
+            const apy = parseFloat(document.getElementById('bank').value);
+            const years = parseFloat(document.getElementById('years').value);
+
+            if (isNaN(amount) || isNaN(monthly) || isNaN(apy) || isNaN(years)) {
+                alert("Please fill in all fields with valid numbers.");
+                return;
+            }
+
+            const n = 12; // Compounded monthly
+            const r = apy / 100; // APY as a decimal
+            const t = years; // Time in years
+            const futureValue = calculateFutureValue(amount, monthly, r, n, t);
+
+            document.getElementById('result').innerHTML = `Future Value: $${futureValue.toFixed(2)}`;
+
+            // Generate data for the graph
+            const labels = Array.from({ length: years + 1 }, (_, i) => i);
+            const depositedData = labels.map(year => amount + monthly * 12 * year);
+            const totalBalanceData = labels.map(year => calculateFutureValue(amount, monthly, r, n, year));
+
+            if (apyChart) {
+                apyChart.destroy();
+            }
+
+            apyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Amount Deposited',
+                            data: depositedData,
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                            fill: true,
+                        },
+                        {
+                            label: 'Total Balance (Deposits + Interest)',
+                            data: totalBalanceData,
+                            borderColor: '#FF6F61',
+                            backgroundColor: 'rgba(255, 111, 97, 0.2)',
+                            fill: true,
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Years',
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Amount ($)',
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    }
+                }
+            });
+        }
+
+        function calculateFutureValue(initialAmount, monthlyDeposit, rate, periodsPerYear, years) {
+            const n = periodsPerYear;
+            const r = rate / n;
+            const t = years * n;
+            const futureValueInitial = initialAmount * Math.pow(1 + r, t);
+            const futureValueMonthly = monthlyDeposit * (Math.pow(1 + r, t) - 1) / r;
+            return futureValueInitial + futureValueMonthly;
+        }
+    </script>
+</body>
+</html>

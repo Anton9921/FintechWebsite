@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Products Comparison</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+            overflow-x: hidden;
+        }
+        nav {
+            background: #333;
+            color: white;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+            color: white;
+            margin-right: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #ff6f61;
+        }
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 40px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .rating {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px auto;
+            width: 80%;
+            max-width: 1200px;
+            animation: slideIn 1.5s ease-in-out;
+        }
+        .rating div {
+            flex: 1;
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 0 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .rating div:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .rating h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .rating p {
+            font-size: 1.2rem;
+            color: #4CAF50; /* Green color for ratings */
+            font-weight: bold;
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-top: 40px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin: 40px auto;
+            width: 80%;
+            max-width: 800px;
+            animation: slideIn 2s ease-in-out;
+        }
+        ul li {
+            margin: 15px 0;
+            font-size: 1.1rem;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        ul li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="checking.html">Checking</a>
+        <a href="savings.html">Savings</a>
+        <a href="investment.html">Investments</a>
+        <a href="fees.html">Fees</a>
+        <a href="pros-cons.html">Pros/Cons</a>
+        <a href="comparison.html">Comparison</a>
+        <a href="apy-calculator.html">APY Calculator</a>
+        <a href="works-cited.html">Sources</a>
+    </nav>
+
+    <h1>Investment Products Comparison</h1>
+    
+    <div class="rating">
+        <div>
+            <h3>Bank of America</h3>
+            <p>★★★★☆</p>
+            <p>Merrill Edge</p>
+        </div>
+        <div>
+            <h3>Wells Fargo</h3>
+            <p>★★★☆☆</p>
+            <p>Advisors</p>
+        </div>
+        <div>
+            <h3>Capital One</h3>
+            <p>★★☆☆☆</p>
+            <p>Limited</p>
+        </div>
+        <div>
+            <h3>Ally Bank</h3>
+            <p>★★★★☆</p>
+            <p>Ally Invest</p>
+        </div>
+    </div>
+
+    <h2>Key Features</h2>
+    <ul>
+        <li>Bank of America: Full brokerage through Merrill Edge</li>
+        <li>Wells Fargo: Traditional wealth management</li>
+        <li>Ally Bank: Low-cost digital investing</li>
+        <li>Capital One: Focused on banking, limited investing</li>
+    </ul>
+</body>
+</html>
